@@ -1,0 +1,16 @@
+
+
+//FOREVER
+
+forever start server.js -p 8080 -m FORK
+forever start server.js -p 8081 -m CLUSTER
+forever list
+forever stopall
+
+//PM2
+pm2 start server.js  --name="Server1" --watch -- 8080
+pm2 start server.js  --name="Server2" --watch -i max -- 8080
+pm2 list
+pm2 stop 'all'
+pm2 delete 'all'
+
