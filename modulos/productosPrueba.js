@@ -23,6 +23,6 @@ function productosFaker() {
 
 export const router  = Router();
 
-router.get('/', async (req, res) => {
+router.get('/productos-test', async (req, res) => {
     res.render('main', { layout: 'productosPrueba', listaProductosPrueba: productosFaker() });
 });

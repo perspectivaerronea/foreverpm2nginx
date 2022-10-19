@@ -52,7 +52,11 @@ const httpServerV = new httpServer(app);
 const io = new IOServer(httpServerV);
 const hbs = { engine };
 
+//  const { resolve } = createRequire(import.meta.url)
+// const { default: add } = await import(pathToFileURL(resolve('.')).toString())
+
 const __filename = fileURLToPath(import.meta.url);
+// const __filename = fileURLToPath(resolve);
 const __dirname = path.dirname(__filename);
 
 function autorizacion(req, res, next) {
@@ -95,11 +99,13 @@ const args = yargsMod
     })
     .argv;
 const PORT = args.puerto || process.env.PORT;
+
 const MODO = args.modo || 'FORK';
 
 // Indicamos que queremos cargar los archivos estáticos que se encuentran en dicha carpeta
 // Comentado para usar con nginx
 // app.use(express.static('./public'))
+app.use('/static', express.static('public'))
 
 //Las siguientes líneas son para que el código reconozca el req.body
 app.use(express.json());
@@ -130,9 +136,9 @@ else {
     // REGISTER
     app.use('/register', registro);
     // RANDOM
-    app.use('/api/randoms', autorizacion, randoms);
+    app.use('/api', autorizacion, randoms);
     // PRODUCTOS PRUEBA
-    app.use('/api/productos-test', autorizacion, faker);
+    app.use('/api', autorizacion, faker);
 
     //Configuro el Engine para usar HandleBars
     app.engine('hbs', hbs.engine({
