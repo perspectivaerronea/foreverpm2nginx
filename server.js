@@ -104,7 +104,6 @@ const MODO = args.modo || 'FORK';
 
 // Indicamos que queremos cargar los archivos estáticos que se encuentran en dicha carpeta
 // Comentado para usar con nginx
-// app.use(express.static('./public'))
 app.use('/static', express.static('public'))
 
 //Las siguientes líneas son para que el código reconozca el req.body
