@@ -100,7 +100,7 @@ const args = yargsMod
     .argv;
 const PORT = args.puerto || process.env.PORT;
 
-const MODO = args.modo || 'FORK';
+const MODO = args.modo == 'CLUSTER';
 
 // Indicamos que queremos cargar los archivos estáticos que se encuentran en dicha carpeta
 // Comentado para usar con nginx
@@ -116,14 +116,14 @@ app.use(passport.session());
 
 
 /* MASTER */
-if (MODO == "CLUSTER" && cluster.isPrimary) {
+if (MODO  && cluster.isPrimary) {
     const numCPUs = os.cpus().length
     for (let i = 0; i < numCPUs; i++) {
         cluster.fork()
     }
 
-    cluster.on('exit', worker => {        
-        cluster.fork()
+    cluster.on('Exit', (worker, code, signal) =>{
+        console.log(`El WORKER ${worker} finalizó su tarea y fue eliminado`);
     })
 }
 /* --------------------------------------------------------------------------- */
